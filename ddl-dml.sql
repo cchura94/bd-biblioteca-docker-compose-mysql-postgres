@@ -119,6 +119,98 @@ Condiciones:
 • El préstamo devuelto debe tener registrada su fecha_devolucion_real.
 • Los préstamos todavía prestados deben tener fecha_devolucion_real en NULL.
 
+- Primero fue alterar la columna fecha_devolucion_real que permita asignar valores NULL
+
+ALTER TABLE prestamo
+MODIFY COLUMN fecha_devolucion_real DATETIME;
+
+
+INSERT INTO prestamo
+(ejemplar_id, usuario_id, fecha_prestamo, fecha_devolucion, fecha_devolucion_real, estado_prestamo)
+VALUES
+(1, 1, '2026-08-01', '2026-08-15', '2026-08-14', false),
+(3, 2, '2026-08-10', '2026-08-24', NULL, true),
+(5, 3, '2026-08-15', '2026-08-29', NULL, true);
+
+
+Pregunta 17 — Actualizar un usuario
+El usuario con id = 1 cambió su número de teléfono.
+Actualiza su teléfono a:
+77799999
+
+UPDATE usuarios
+SET telefono = '77799999'
+WHERE id = 1;
+
+Pregunta 19 — Actualizar un libro
+El libro con id = 2 cambió de editorial.
+Actualiza la editorial a:
+Editorial Tecnológica
+
+UPDATE libros
+SET editorial = 'Editorial Tecnológica'
+WHERE id = 2;
+
+Pregunta 21 — Actualizar un ejemplar
+El ejemplar con id = 3 fue prestado.
+Cambia su estado de:
+DISPONIBLE (true)
+a:
+PRESTADO (false)
+
+UPDATE ejemplares
+SET disponible = 0
+WHERE id = 3;
+
+
+
+Pregunta 23 — Registrar devolución
+El préstamo con id = 2 fue devuelto.
+Actualiza:
+• fecha_devolucion_real
+• estado
+La devolución ocurrió el:
+2026-08-14
+
+UPDATE prestamo
+SET fecha_devolucion_real = '2026-08-14', estado_prestamo = false
+WHERE id = 2
+
+Pregunta 25 — Eliminar una relación
+Si existe la tabla autor_libro, elimina la relación entre:
+• libro_id = 2
+• autor_id = 3
+
+////////// PENDIENTE
+
+DELETE FROM autor_libro
+WHERE libro_id = 2
+  AND autor_id = 3;
+
+
+Pregunta 27 — Eliminar un usuario
+Elimina los usuarios que no tenga préstamos .
+
+Ten en cuenta que si el usuario tiene registros relacionados en prestamos, la clave foránea
+puede impedir la eliminación.
+
+DELETE FROM usuarios
+WHERE id = 4;
+
+--------
+DELETE FROM usuarios
+WHERE id NOT IN(
+    SELECT usuario_id
+    FROM prestamos
+);
+
+- usuarios que se prestaron
+SELECT usuario_id
+FROM prestamos;
+--------------------------
+
+
+
 
 
 ----------------------------------------------------------
