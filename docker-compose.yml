@@ -25,6 +25,32 @@ services:
       PMA_PORT: 3306
       PMA_USER: root
       PMA_PASSWORD: root
+  
+  postgres_db:
+    container_name: postgres_db
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_db_data:/var/lib/postgresql/data
+  
+  pgadmin_db:
+    container_name: pgadmin_db
+    image: dpage/pgadmin4
+    restart: always
+    depends_on:
+      - postgres_db
+    ports:
+      - "83:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+
 
 volumes:
   mysql_db_data1:
+  postgres_db_data:
